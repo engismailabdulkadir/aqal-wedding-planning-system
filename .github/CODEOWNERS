@@ -1,0 +1,10 @@
+# AQAL Wedding Planning System — owner review on all changes
+* @engismailabdulkadir
+
+# Sensitive shared infrastructure (owner must review)
+.github/ @engismailabdulkadir
+backend/src/config/ @engismailabdulkadir
+backend/src/server.js @engismailabdulkadir
+backend/src/app.js @engismailabdulkadir
+frontend/src/routes/ @engismailabdulkadir
+frontend/src/services/api.js @engismailabdulkadir

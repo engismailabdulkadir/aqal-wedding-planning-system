@@ -1,0 +1,172 @@
+name: Team Scope Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  scope-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify PR file changes match developer branch scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+
+          echo "Source branch: ${HEAD_REF}"
+          echo "Target branch: ${BASE_REF}"
+
+          mapfile -t CHANGED < <(git diff --name-only "origin/${BASE_REF}...HEAD")
+          if [ ${#CHANGED[@]} -eq 0 ]; then
+            echo "No file changes detected."
+            exit 0
+          fi
+
+          SHARED=(
+            ".github/"
+            "README.md"
+            ".gitignore"
+            "package.json"
+            "package-lock.json"
+            "frontend/package.json"
+            "frontend/package-lock.json"
+            "backend/package.json"
+            "backend/package-lock.json"
+            "frontend/index.html"
+            "frontend/vite.config.js"
+            "frontend/tailwind.config.js"
+            "backend/src/app.js"
+            "backend/src/server.js"
+            "backend/src/config/db.js"
+            "backend/src/middleware/errorHandler.js"
+            "backend/src/middleware/notFound.js"
+            "backend/src/middleware/validateObjectId.js"
+            "backend/src/middleware/validateRequest.js"
+            "frontend/src/main.jsx"
+            "frontend/src/App.jsx"
+          )
+
+          matches_any() {
+            local file="$1"
+            shift
+            local pattern
+            for pattern in "$@"; do
+              case "$pattern" in
+                *\*)
+                  local prefix="${pattern%\*}"
+                  if [[ "$file" == "${prefix}"* ]]; then
+                    return 0
+                  fi
+                  ;;
+                *)
+                  if [[ "$file" == "$pattern" ]]; then
+                    return 0
+                  fi
+                  ;;
+              esac
+            done
+            return 1
+          }
+
+          is_shared() {
+            local file="$1"
+            for prefix in "${SHARED[@]}"; do
+              case "$file" in
+                $prefix*) return 0 ;;
+              esac
+            done
+            return 1
+          }
+
+          case "${HEAD_REF}" in
+            Developer-Amina-dev)
+              ALLOWED=(
+                "frontend/src/pages/admin/"
+                "frontend/src/pages/Login.jsx"
+                "frontend/src/pages/Register.jsx"
+                "frontend/src/pages/dashboard/AdminDashboard.jsx"
+              )
+              ;;
+            saviccade4-glitch-dev)
+              ALLOWED=(
+                "frontend/src/pages/vendor/"
+                "frontend/src/pages/public/Hall"
+                "frontend/src/pages/public/HallsPage.jsx"
+                "frontend/src/pages/hall/"
+                "frontend/src/utils/vendorCategories.js"
+                "frontend/src/components/ui/ListingImage"
+                "frontend/src/components/ui/ServiceCard.jsx"
+                "frontend/src/components/ui/VenueCard.jsx"
+                "frontend/src/components/ui/VenueImage.jsx"
+                "frontend/src/pages/dashboard/VendorDashboard.jsx"
+              )
+              ;;
+            yacquupmohamed-dev)
+              ALLOWED=(
+                "frontend/src/pages/customer/"
+                "frontend/src/pages/dashboard/CustomerDashboard.jsx"
+                "frontend/src/pages/PublicInvitationPage.jsx"
+                "frontend/src/context/AuthContext.jsx"
+                "frontend/src/context/ActiveWeddingContext.jsx"
+                "frontend/src/hooks/useAuth.js"
+                "frontend/src/services/authService.js"
+                "frontend/src/routes/CoupleRoute.jsx"
+                "frontend/src/routes/ProtectedRoute.jsx"
+                "frontend/src/routes/RoleRoute.jsx"
+                "frontend/src/routes/PlannerRoute.jsx"
+                "backend/src/controllers/authController.js"
+                "backend/src/routes/authRoutes.js"
+                "backend/src/middleware/authMiddleware.js"
+                "backend/src/utils/generateToken.js"
+                "backend/src/utils/roles.js"
+                "backend/src/utils/userAccountStatus.js"
+                "backend/src/utils/userUniqueness.js"
+              )
+              ;;
+            jawahir-1-dev)
+              ALLOWED=(
+                "backend/src/controllers/"
+                "backend/src/routes/"
+              )
+              ;;
+            mqen3700-ux-dev)
+              ALLOWED=(
+                "backend/src/models/"
+              )
+              ;;
+            main|master)
+              echo "Direct PR from main is not a developer scope branch."
+              exit 0
+              ;;
+            *)
+              echo "::error::Unknown developer branch '${HEAD_REF}'. Use an assigned *-dev branch."
+              exit 1
+              ;;
+          esac
+
+          OUT_OF_SCOPE=()
+          for file in "${CHANGED[@]}"; do
+            if is_shared "$file"; then
+              echo "SHARED (allowed, review carefully): $file"
+              continue
+            fi
+            if matches_any "$file" "${ALLOWED[@]}"; then
+              echo "OK: $file"
+              continue
+            fi
+            OUT_OF_SCOPE+=("$file")
+          done
+
+          if [ ${#OUT_OF_SCOPE[@]} -gt 0 ]; then
+            echo "::error::The following files are outside the scope for branch '${HEAD_REF}':"
+            printf '%s\n' "${OUT_OF_SCOPE[@]}"
+            exit 1
+          fi
+
+          echo "Scope check passed for branch ${HEAD_REF}."

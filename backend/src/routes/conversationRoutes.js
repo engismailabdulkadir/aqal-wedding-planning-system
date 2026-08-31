@@ -1,0 +1,2 @@
+import { Router } from 'express'; import { createConversation, listConversations, listMessages, sendMessage } from '../controllers/messageController.js'; import { protect } from '../middleware/authMiddleware.js';
+const router = Router(); router.use(protect); router.route('/').get(listConversations).post(createConversation); router.route('/:id/messages').get(listMessages).post(sendMessage); export default router;

@@ -1,0 +1,5 @@
+function BudgetProgress({ percentage, overBudget }) {
+  const width = Math.min(Math.max(percentage, 0), 100);
+  return <section className="rounded-2xl border border-stone-100 bg-white p-6 shadow-sm"><div className="flex items-end justify-between gap-4"><div><h2 className="text-lg font-semibold text-stone-900">Budget Progress</h2><p className="mt-1 text-sm text-stone-500">Your actual spending against the overall wedding budget.</p></div><p className={`text-xl font-semibold ${overBudget ? 'text-red-600' : 'text-brand-700'}`}>{percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%</p></div><div className="mt-5 h-3 overflow-hidden rounded-full bg-stone-100"><div className={`h-full rounded-full transition-[width] ${overBudget ? 'bg-red-500' : 'bg-brand-500'}`} style={{ width: `${width}%` }} /></div><p className={`mt-3 text-sm font-medium ${overBudget ? 'text-red-600' : 'text-stone-500'}`}>{overBudget ? 'Your actual spending is over the wedding budget.' : `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}% of budget spent`}</p></section>;
+}
+export default BudgetProgress;

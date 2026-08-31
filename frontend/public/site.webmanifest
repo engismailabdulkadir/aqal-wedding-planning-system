@@ -1,0 +1,17 @@
+{
+  "name": "AQAL Wedding Planning System",
+  "short_name": "AQAL",
+  "description": "AQAL Wedding Planning System — plan halls, vendors, guests, and payments in one place.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F7FC",
+  "theme_color": "#3F5DB3",
+  "icons": [
+    {
+      "src": "/aqal-logo.jpg?v=aqal2",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

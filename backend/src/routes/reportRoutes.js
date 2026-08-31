@@ -1,0 +1,1 @@
+import { Router } from 'express'; import { getReport } from '../controllers/reportController.js'; import { protect } from '../middleware/authMiddleware.js'; const router = Router(); router.get('/', protect, getReport); export default router;

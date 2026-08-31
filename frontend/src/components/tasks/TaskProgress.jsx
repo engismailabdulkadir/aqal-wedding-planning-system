@@ -1,0 +1,4 @@
+function TaskProgress({ percentage }) {
+  return <section className="rounded-2xl border border-stone-100 bg-white p-5 shadow-sm sm:p-6"><div className="flex items-center justify-between gap-4"><div><h2 className="font-semibold text-stone-900">Wedding Planning Progress</h2><p className="mt-1 text-sm text-stone-500">Your completed wedding checklist</p></div><span className="text-2xl font-semibold text-brand-700">{percentage}%</span></div><div className="mt-5 h-3 overflow-hidden rounded-full bg-stone-100" role="progressbar" aria-label="Wedding planning progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow={percentage}><div className="h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-700 transition-[width]" style={{ width: `${percentage}%` }} /></div></section>;
+}
+export default TaskProgress;

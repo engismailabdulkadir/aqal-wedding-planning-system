@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AQAL Wedding Planning System — plan halls, vendors, guests, and payments in one place." />
+    <meta name="application-name" content="AQAL Wedding Planning System" />
+    <meta name="apple-mobile-web-app-title" content="AQAL" />
+    <meta name="theme-color" content="#3F5DB3" />
+    <link rel="icon" type="image/jpeg" href="/aqal-logo.jpg?v=aqal2" />
+    <link rel="shortcut icon" type="image/jpeg" href="/aqal-logo.jpg?v=aqal2" />
+    <link rel="apple-touch-icon" href="/aqal-logo.jpg?v=aqal2" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>AQAL Wedding Planning System</title>
+    <script>
+      (function () {
+        try {
+          var preference = localStorage.getItem('wedding_theme_preference') || 'system';
+          var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var resolved = preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
+          if (resolved === 'dark') document.documentElement.classList.add('dark');
+          document.documentElement.dataset.theme = resolved;
+          document.documentElement.style.colorScheme = resolved;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

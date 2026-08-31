@@ -1,0 +1,52 @@
+{
+  "name": "smart-wedding-planner-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/models/User.js && node --check src/models/Wedding.js && node --check src/models/BudgetItem.js && node --check src/models/Guest.js && node --check src/models/Task.js && node --check src/controllers/authController.js && node --check src/controllers/weddingController.js && node --check src/controllers/budgetController.js && node --check src/controllers/guestController.js && node --check src/controllers/taskController.js && node --check src/middleware/authMiddleware.js && node --check scripts/verifyUserModel.js && node --check scripts/verifyAuthFlow.js && node --check scripts/verifyWeddingFlow.js && node --check scripts/verifyBudgetFlow.js && node --check scripts/verifyGuestFlow.js && node --check scripts/verifyTaskFlow.js",
+    "verify:user": "node scripts/verifyUserModel.js",
+    "verify:auth": "node scripts/verifyAuthFlow.js",
+    "verify:wedding": "node scripts/verifyWeddingFlow.js",
+    "verify:budget": "node scripts/verifyBudgetFlow.js",
+    "verify:budget-payment": "node scripts/verifyBudgetPaymentFlow.js",
+    "verify:wedding-recovery": "node scripts/verifyWeddingRecoveryFlow.js",
+    "verify:wedding-management": "node scripts/verifyWeddingManagement.js",
+    "verify:guests": "node scripts/verifyGuestFlow.js",
+    "verify:tasks": "node scripts/verifyTaskFlow.js",
+    "verify:workspace": "node scripts/verifyCustomerWorkspace.js",
+    "verify:workspace-integration": "node scripts/verifyWorkspaceIntegration.js",
+    "verify:planner-vendor": "node scripts/verifyPlannerVendorWorkflow.js",
+    "verify:multi-wedding": "node scripts/verifyMultiWeddingFlow.js",
+    "seed:admin": "node scripts/seedAdmin.js",
+    "seed:part2": "node scripts/seedPart2.js",
+    "seed:part3": "node scripts/seedPart3.js",
+    "seed:venues": "node scripts/seedMogadishuVenues.js",
+    "seed": "node scripts/seedPart2.js && node scripts/seedPart3.js && node scripts/seedMogadishuVenues.js",
+    "verify:part2": "node scripts/verifyPart2Flow.js",
+    "verify:part3": "node scripts/verifyPart3Flow.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-async-handler": "^1.2.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "latest",
+    "multer": "^2.3.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  }
+}

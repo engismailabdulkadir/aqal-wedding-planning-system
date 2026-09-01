@@ -8,6 +8,7 @@ build/
 .vite/
 
 # Environment & secrets (never commit real credentials)
+..env.example
 .env
 .env.*
 !.env.example
